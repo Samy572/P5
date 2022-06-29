@@ -1,27 +1,32 @@
 let items = document.querySelector('#cart__items');
-let panierVide = document.querySelector('.cart__item__content__description');
 console.log(items);
 let panierStorage = JSON.parse(localStorage.getItem('article'));
-let deleteItem = document.querySelector('deleteItem');
+let btnDelete = document.getElementsByClassName('deleteItem');
+let totalQuantity = document.getElementById('totalQuantity');
+let totalPrice = document.getElementById('totalPrice');
 
 // Création de variable pour chaques éléments du panierStorage
 
-if (panierStorage === null || undefined) {
-	console.log('Votre panier est vide.');
+if (panierStorage == null) {
+	document.querySelector('h1').innerHTML = 'Votre panier est vide.';
 } else {
+	// Boucle pour créer des variables pour chaques données dans l'api
 	fetch('http://localhost:3000/api/products')
 		.then((response) => response.json())
 		.then((data) => {
 			let panierStorage = JSON.parse(localStorage.getItem('article'));
+
 			for (const variable of data) {
 				let img = variable.imageUrl;
-				let price = variable.price;
+				let price = (variable.price);
 				let name = variable.name;
 				let alt = variable.altTxt;
 				let id = variable._id;
-        // Boucle pour récupérer les éléments du panier storage
+
+				// Boucle pour récupérer les éléments du panier storage
 				for (const element of panierStorage) {
 					if (element.id === id) {
+						console.log(element);
 						items.innerHTML += `<article class="cart__item" data-id="${element.id}" data-color="${element.couleur}">
                 <div class="cart__item__img">
                   <img src="${img}" alt="${alt}">
@@ -48,3 +53,4 @@ if (panierStorage === null || undefined) {
 			}
 		});
 }
+

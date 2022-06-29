@@ -46,7 +46,6 @@ button.addEventListener('click', () => {
 			id: _id,
 			couleur: color.value,
 			quantité: parseInt(quantity.value),
-			prix: parseInt(price * quantity.value),
 		};
 		alert('Article ajouté au panier.');
 		// variable de stockage de données
@@ -56,6 +55,7 @@ button.addEventListener('click', () => {
 		if (localStorage.getItem('article') !== null) {
 			panierStorage = JSON.parse(localStorage.getItem('article'));
 			console.log(panierStorage);
+			// Boucle pour additionner nos quantitées si les conditions sont remplies.
 			panierStorage.forEach((element) => {
 				console.log(element);
 				if (element.id === panier.id && element.couleur === panier.couleur) {
