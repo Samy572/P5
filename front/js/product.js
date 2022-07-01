@@ -61,16 +61,21 @@ button.addEventListener('click', () => {
 				if (element.id === panier.id && element.couleur === panier.couleur) {
 					console.log('Mise à jour des quantité');
 					element.quantité += panier.quantité;
+					console.log(panier);
 				} else {
 					panierStorage.push(panier);
+					
 				}
 			});
 		} else {
 			panierStorage.push(panier);
+			
 		}
 		// panierStorage.push(panier);
 
 		localStorage.setItem('article', JSON.stringify(panierStorage));
+		
+		
 	} else {
 		alert("Veuillez choisir une couleur et le nombre d'article.");
 	}
