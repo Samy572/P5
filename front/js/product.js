@@ -2,12 +2,11 @@
 const picture = document.querySelector('.item__img');
 const title = document.querySelector('#title');
 let price = document.getElementById('price');
-const description = document.getElementById('description');
-const color = document.querySelector('#colors');
+const description = document.getElementById('description'); 
 const option = document.getElementsByTagName('<option>');
-const button = document.getElementById('addToCart');
-let quantity = document.querySelector('#quantity');
-
+let color = document.getElementById('colors')
+let addToCart = document.getElementById("addToCart");
+let quantité = document.getElementById("quantity")
 // récuperer l'id de l'url
 const myId = window.location.search;
 console.log(myId);
@@ -37,46 +36,42 @@ fetch('http://localhost:3000/api/products' + '?' + _id)
 		});
 	});
 
-// Event sur le clique du boutton
 
-button.addEventListener('click', () => {
-	if (quantity.value >= 1 && quantity.value <= 100 && color.value != '') {
-		// création du panier avec les valeur id, color quantité et prix si l'utilisateur à bien remplis les conditions (couleur / quantité).
-		let panier = {
-			id: _id,
-			couleur: color.value,
-			quantité: parseInt(quantity.value),
-		};
-		alert('Article ajouté au panier.');
-		// variable de stockage de données
-		let panierStorage = [];
+	
 
-		// Si on a des élement dans notre local storage on ajoute les articles dans panierStorage
-		if (localStorage.getItem('article') !== null) {
-			panierStorage = JSON.parse(localStorage.getItem('article'));
-			console.log(panierStorage);
-			// Boucle pour additionner nos quantitées si les conditions sont remplies.
-			panierStorage.forEach((element) => {
-				console.log(element);
-				if (element.id === panier.id && element.couleur === panier.couleur) {
-					console.log('Mise à jour des quantité');
-					element.quantité += panier.quantité;
-					console.log(panier);
-				} else {
-					panierStorage.push(panier);
-					
-				}
-			});
-		} else {
-			panierStorage.push(panier);
-			
-		}
-		// panierStorage.push(panier);
 
-		localStorage.setItem('article', JSON.stringify(panierStorage));
+//Ajout du produit au panier
+function ajoutProduit() {
+    //Paramètres du produit
+    let panier = {
+        id : _id,
+        couleur : color.value,
+        quantité : parseInt(quantity.value), 
+    };
+    let panierStorage = [];
+    //Alerte error couleur quantité. 
+    if (panier.couleur == "" || panier.quantité <= 0 || panier.quantité > 100) {
+        alert("Veuillez choisir une couleur et le nombre d'article.");
+        
+    }
+    //Vérification  produit dans le panier si la couleur et l'id et la même on additionne les quantités 
+    if (localStorage.getItem("article")) {
+        panierStorage = JSON.parse(localStorage.getItem("article"));
+        for (i in panierStorage) {
+            if (panierStorage[i].id === panier.id && panierStorage[i].couleur === panier.couleur) {
+                panierStorage[i].quantité = parseInt(panierStorage[i].quantité) + parseInt(panier.quantité);
+                localStorage.setItem("article", JSON.stringify(panierStorage));
+				alert("Article ajouté au panier."); 
+                return
+            }
+        };
+    };
+    if (panier.couleur !== "" && panier.quantité > 0 && panier.quantité <= 100) {
+        panierStorage.push(panier);
+        localStorage.setItem("article", JSON.stringify(panierStorage))
+		alert("Article ajouté au panier."); 
 		
-		
-	} else {
-		alert("Veuillez choisir une couleur et le nombre d'article.");
-	}
-});
+    }
+}
+
+addToCart.addEventListener("click", ajoutProduit);

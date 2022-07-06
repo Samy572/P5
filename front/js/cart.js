@@ -1,12 +1,16 @@
 let items = document.querySelector('#cart__items');
-console.log(items);
 let panierStorage = JSON.parse(localStorage.getItem('article'));
-let deleteItem = document.getElementsByClassName('deleteItem');
+let deleteItem = document.querySelectorAll('.deleteItem');
+function global() {
+	affichagePanier();
+	quantitéTotal();
+}
+global();
 
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
-	if (panierStorage == null) {
-		document.querySelector('h1').innerHTML = 'Votre panier est vide.';
+	if (panierStorage === null) {
+		document.querySelector('h1').innerText = 'Votre panier est vide.';
 	} else {
 		// Boucle pour créer des variables pour chaques données dans l'api
 		fetch('http://localhost:3000/api/products')
@@ -41,7 +45,7 @@ function affichagePanier() {
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1"  max="100" value="${element.quantité}">
                     </div>
                     <div class="cart__item__content__settings__delete"> 
-                      <p class="deleteItem" data-delete ="${element.id}">Supprimer</p>
+                      <p class="deleteItem">Supprimer</p>
                     </div> 
                   </div>
                 </div>
@@ -52,11 +56,8 @@ function affichagePanier() {
 			});
 	}
 }
-
-affichagePanier();
-
-function quantitéPrixTotal() {
-	// Partie quantité
+// Fonction total quantité
+function quantitéTotal() {
 	let totalQuantity = document.getElementById('totalQuantity'); // Récupération de l'id
 	let total = 0; // Initialisation du total à 0
 
@@ -66,12 +67,18 @@ function quantitéPrixTotal() {
 		console.log(total);
 	});
 	totalQuantity.innerText = total; // quantité retranscrite
-
-	// Partie prix
-
-	let totalPrice = document.getElementById('totalPrice');
-	let prix = document.querySelectorAll('.cart_item_content_description :nth-child(2)');
-	
 }
 
-quantitéPrixTotal();
+// Fonction total prix
+
+function prix() {}
+
+// Suprimmer des articles dans le localstorage
+
+console.log(deleteItem);
+for (let i = 0; i < deleteItem.length; i++) {
+	deleteItem[i].addEventListener('click', () => {
+		console.log('appuyer');
+		deleteItem[i].innerHTML = `data`;
+	});
+}
