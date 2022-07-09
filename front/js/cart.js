@@ -1,11 +1,9 @@
 let items = document.querySelector('#cart__items');
+
 let panierStorage = JSON.parse(localStorage.getItem('article'));
 let deleteItem = document.querySelectorAll('.deleteItem');
-function global() {
-	affichagePanier();
-	quantitéTotal();
-}
-global();
+
+affichagePanier();
 
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
@@ -17,10 +15,11 @@ function affichagePanier() {
 			.then((response) => response.json())
 			.then((data) => {
 				let panierStorage = JSON.parse(localStorage.getItem('article'));
+				console.log(panierStorage);
 				// Boucle sur l'api pour récupérer les données nécéssaires
 				for (const variable of data) {
 					let img = variable.imageUrl;
-					let price = variable.price;
+					let price = parseInt(variable.price);
 					let name = variable.name;
 					let alt = variable.altTxt;
 					let id = variable._id;
@@ -52,33 +51,28 @@ function affichagePanier() {
               </article>`;
 						}
 					}
-				}
+				} 
+				totalQttPrix();
 			});
 	}
 }
-// Fonction total quantité
-function quantitéTotal() {
+
+// Fonction total
+function totalQttPrix() {
 	let totalQuantity = document.getElementById('totalQuantity'); // Récupération de l'id
 	let total = 0; // Initialisation du total à 0
 
 	panierStorage.forEach((element) => {
 		// Total 0 + la quantité stocké dans le locale storage
 		total += element.quantité;
-		console.log(total);
 	});
 	totalQuantity.innerText = total; // quantité retranscrite
+
+	let prix = document.querySelectorAll(
+		'.cart__item__content__description :nth-child(3)'
+	);
+	// console.log(price);
 }
 
-// Fonction total prix
+//fonction pour la mise à jour du total du prix et des articles
 
-function prix() {}
-
-// Suprimmer des articles dans le localstorage
-
-console.log(deleteItem);
-for (let i = 0; i < deleteItem.length; i++) {
-	deleteItem[i].addEventListener('click', () => {
-		console.log('appuyer');
-		deleteItem[i].innerHTML = `data`;
-	});
-}
