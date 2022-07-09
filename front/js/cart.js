@@ -5,6 +5,7 @@ let deleteItem = document.querySelectorAll('.deleteItem');
 
 affichagePanier();
 
+
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
 	if (panierStorage === null) {
@@ -50,14 +51,14 @@ function affichagePanier() {
                 </div>
               </article>`;
 						}
+						totalQttPrix();
 					}
 				} 
-				totalQttPrix();
 			});
 	}
 }
 
-// Fonction total
+// Fonction total quantité et prix 
 function totalQttPrix() {
 	let totalQuantity = document.getElementById('totalQuantity'); // Récupération de l'id
 	let total = 0; // Initialisation du total à 0
@@ -68,11 +69,21 @@ function totalQttPrix() {
 	});
 	totalQuantity.innerText = total; // quantité retranscrite
 
-	let prix = document.querySelectorAll(
-		'.cart__item__content__description :nth-child(3)'
-	);
+	let cartItem = document.querySelectorAll('.cart__item');
+	let  totalPrix = 0;  // Initialisation du prix à 0 
+	let totalPrice = document.getElementById('totalPrice'); // récupération de l'id totalPrice
+	for (let i = 0; i < cartItem.length; i++) {  // Boucle dans cart item pour récupérer les prix et la quantité
+		let prix = document.querySelectorAll('.cart__item__content__description :nth-child(3)')[i].innerText;
+		let qtt = document.querySelectorAll(".itemQuantity")[i].value;
+		totalPrix += parseInt(prix) * qtt;  // notre prix total
+		
+	}		
+	totalPrice.innerText = totalPrix; //retranscription du prix 
 	// console.log(price);
 }
 
 //fonction pour la mise à jour du total du prix et des articles
+
+
+
 
