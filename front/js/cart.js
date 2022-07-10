@@ -1,10 +1,7 @@
 let items = document.querySelector('#cart__items');
-
 let panierStorage = JSON.parse(localStorage.getItem('article'));
-let deleteItem = document.querySelectorAll('.deleteItem');
 
 affichagePanier();
-
 
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
@@ -51,9 +48,9 @@ function affichagePanier() {
                 </div>
               </article>`;
 						}
-						totalQttPrix();
 					}
-				} 
+				} totalQttPrix();
+				  supprimerProduit();
 			});
 	}
 }
@@ -79,11 +76,26 @@ function totalQttPrix() {
 		
 	}		
 	totalPrice.innerText = totalPrix; //retranscription du prix 
-	// console.log(price);
+	
 }
 
-//fonction pour la mise à jour du total du prix et des articles
+//fonction pour la suppression des articles au clique. 
 
+function supprimerProduit() {
+    let deleteItem = document.querySelectorAll('.deleteItem');
 
-
-
+	// Boucle au clique sur deleteItem 
+    for (let i = 0; i < deleteItem.length; i++){
+        deleteItem[i].addEventListener("click" , () => {     
+            //'Élement à supprimer en fonction de son id et sa couleur
+            let removeId = panierStorage[i].id;
+            let removeColor = panierStorage[i].couleur;
+			// Création d'un nouveau tableau si la condition est bien remplie 
+            panierStorage = panierStorage.filter( el => el.id !== removeId || el.couleur !== removeColor );  
+            localStorage.setItem("article", JSON.stringify(panierStorage));
+            alert("Produit supprimé.");
+            location.reload();
+        })
+    }
+}
+supprimerProduit();
