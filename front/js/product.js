@@ -52,14 +52,14 @@ function ajoutProduit() {
 	//Vérification  produit dans le panier si la couleur et l'id et la même on additionne les quantités
 	if (localStorage.getItem('article')) {
 		panierStorage = JSON.parse(localStorage.getItem('article'));
-		for (i in panierStorage) {
+		for (el in panierStorage) {
 			if (
-				panierStorage[i].id === panier.id &&
-				panierStorage[i].couleur === panier.couleur
+				panierStorage[el].id === panier.id &&
+				panierStorage[el].couleur === panier.couleur
 			) {
-				panierStorage[i].quantité = panierStorage[i].quantité + panier.quantité;
+				panierStorage[el].quantité = panierStorage[el].quantité + panier.quantité;
 				localStorage.setItem('article', JSON.stringify(panierStorage));
-				alert('Article ajouté au panier.');
+				alert('Article ajouté à votre panier.');
 				return;
 			}
 		}

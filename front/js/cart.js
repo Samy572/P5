@@ -49,15 +49,18 @@ function affichagePanier() {
               </article>`;
 						}
 					}
-				} totalQttPrix();
-				  supprimerProduit();
+				}
+				totalQttPrix();
+				supprimerProduit();
+				changeQtt();
 			});
 	}
 }
 
-// Fonction total quantité et prix 
+// Fonction total quantité et prix
 function totalQttPrix() {
-	let totalQuantity = document.getElementById('totalQuantity'); // Récupération de l'id
+	// Récupération de l'id
+	let totalQuantity = document.getElementById('totalQuantity');
 	let total = 0; // Initialisation du total à 0
 
 	panierStorage.forEach((element) => {
@@ -67,35 +70,75 @@ function totalQttPrix() {
 	totalQuantity.innerText = total; // quantité retranscrite
 
 	let cartItem = document.querySelectorAll('.cart__item');
-	let  totalPrix = 0;  // Initialisation du prix à 0 
-	let totalPrice = document.getElementById('totalPrice'); // récupération de l'id totalPrice
-	for (let i = 0; i < cartItem.length; i++) {  // Boucle dans cart item pour récupérer les prix et la quantité
-		let prix = document.querySelectorAll('.cart__item__content__description :nth-child(3)')[i].innerText;
-		let qtt = document.querySelectorAll(".itemQuantity")[i].value;
-		totalPrix += parseInt(prix) * qtt;  // notre prix total
-		
-	}		
-	totalPrice.innerText = totalPrix; //retranscription du prix 
-	
+	// Initialisation du prix à 0
+	let totalPrix = 0;
+	// récupération de l'id totalPrice
+	let totalPrice = document.getElementById('totalPrice');
+	// Boucle dans cart item pour récupérer les prix et la quantité
+	for (let i = 0; i < cartItem.length; i++) {
+		let prix = document.querySelectorAll(
+			'.cart__item__content__description :nth-child(3)'
+		)[i].innerText;
+		let qtt = document.querySelectorAll('.itemQuantity')[i].value;
+		totalPrix += parseInt(prix) * qtt; // notre prix total
+	}
+	totalPrice.innerText = totalPrix; //retranscription du prix
 }
 
-//fonction pour la suppression des articles au clique. 
+//fonction pour la suppression des articles au clique.
 
 function supprimerProduit() {
-    let deleteItem = document.querySelectorAll('.deleteItem');
+	let deleteItem = document.querySelectorAll('.deleteItem');
 
-	// Boucle au clique sur deleteItem 
-    for (let i = 0; i < deleteItem.length; i++){
-        deleteItem[i].addEventListener("click" , () => {     
-            //'Élement à supprimer en fonction de son id et sa couleur
-            let removeId = panierStorage[i].id;
-            let removeColor = panierStorage[i].couleur;
-			// Création d'un nouveau tableau si la condition est bien remplie 
-            panierStorage = panierStorage.filter( el => el.id !== removeId || el.couleur !== removeColor );  
-            localStorage.setItem("article", JSON.stringify(panierStorage));
-            alert("Produit supprimé.");
-            location.reload();
-        })
-    }
+	// Boucle au clique sur deleteItem
+	for (let i = 0; i < deleteItem.length; i++) {
+		deleteItem[i].addEventListener('click', () => {
+			//'Élement à supprimer en fonction de son id et sa couleur
+			let removeId = panierStorage[i].id;
+			let removeColor = panierStorage[i].couleur;
+			// Création d'un nouveau tableau si la condition est bien remplie
+			panierStorage = panierStorage.filter(
+				(el) => el.id !== removeId || el.couleur !== removeColor
+			);
+			localStorage.setItem('article', JSON.stringify(panierStorage));
+			alert('Produit supprimé.');
+			location.reload();
+		});
+	}
 }
-supprimerProduit();
+
+// Fonction pour changer la quantité de manière dynamique.
+
+function changeQtt() {
+	let input = Array.from(document.querySelectorAll('input')).forEach(
+		(element) => {
+			element.addEventListener('change', (e) => {
+				// panierStorage.quantité
+				const idProduit =
+					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
+						'data-id'
+					);
+				const nouvelleQte = parseInt(e.target.value);
+				const majProduit = panierStorage.map((element) => {
+					if (element.id === idProduit) {
+						element.quantité = nouvelleQte;
+					}
+					return element;
+				});
+				console.log(majProduit);
+				localStorage.setItem('article', JSON.stringify(majProduit));
+				location.reload();
+			});
+		}
+	);
+}
+
+// Les [] correspondent au caracteres qu'on peut utiliser les {} correspondent au nombre de caractere que l'on peut utiliser.
+//const validationMail = new RegExp('[a-z]{3}[A-Z]{1}[0-9]{3}')
+
+//if (validationMail.test(term)) {
+// console.log("Valid");
+// } else {
+// 	console.log("Invalid");
+// 	error += 'Invalid email';
+// }
