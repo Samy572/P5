@@ -5,7 +5,7 @@ affichagePanier();
 
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
-	if (panierStorage === null) {
+	if (panierStorage == "") {
 		document.querySelector('h1').innerText = 'Votre panier est vide.';
 	} else {
 		// Boucle pour créer des variables pour chaques données dans l'api
@@ -114,10 +114,8 @@ function changeQtt() {
 		(element) => {
 			element.addEventListener('change', (e) => {
 				// panierStorage.quantité
-				const idProduit =
-					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
-						'data-id'
-					);
+				const idProduit =	e.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-id');
+			
 				const nouvelleQte = parseInt(e.target.value);
 				const majProduit = panierStorage.map((element) => {
 					if (element.id === idProduit) {
@@ -131,7 +129,7 @@ function changeQtt() {
 			});
 		}
 	);
-}
+} 
 
 // Les [] correspondent au caracteres qu'on peut utiliser les {} correspondent au nombre de caractere que l'on peut utiliser.
 //const validationMail = new RegExp('[a-z]{3}[A-Z]{1}[0-9]{3}')
@@ -142,3 +140,28 @@ function changeQtt() {
 // 	console.log("Invalid");
 // 	error += 'Invalid email';
 // }
+
+
+// Partie regex formulaire
+
+let prenomRegex = new RegExp ('[A-Z]{1}[a-z]');
+let nomRegex = new RegExp ('[A-Z]{1}[a-z]');
+let adresseRegex = new RegExp ('[A-Z]{1}[a-z]');
+let villeRegex = new RegExp ('[A-Z]{1}[a-z]');
+let emailRegex = new RegExp ('[a-z0-9]+@[a-z]+\.[a-z]{2,3}$');
+let prenom = document.getElementById('firstName');
+let nom = document.getElementById('lastName');
+let adresse = document.getElementById('address');
+let email = document.getElementById('email');
+let erreurMsgPrenom = document.getElementById('firstNameErrorMsg');
+let erreurMsgName = document.getElementById('lastNameErrorMsg');
+let erreurMsgAdresse = document.getElementById('addressErrorMsg');
+let erreurMsgVille = document.getElementById('cityErrorMsg');
+let erreurMsgEmail = document.getElementById('emailErrorMsg');
+
+
+if(emailRegex.test('Samy.chabbi@yahoo.abc')){
+	console.log('valid');
+}else{
+	console.log('invalide');
+} 
