@@ -5,7 +5,7 @@ affichagePanier();
 
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
-	if (panierStorage == "") {
+	if (panierStorage == '') {
 		document.querySelector('h1').innerText = 'Votre panier est vide.';
 	} else {
 		// Boucle pour créer des variables pour chaques données dans l'api
@@ -114,8 +114,11 @@ function changeQtt() {
 		(element) => {
 			element.addEventListener('change', (e) => {
 				// panierStorage.quantité
-				const idProduit =	e.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-id');
-			
+				const idProduit =
+					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
+						'data-id'
+					);
+
 				const nouvelleQte = parseInt(e.target.value);
 				const majProduit = panierStorage.map((element) => {
 					if (element.id === idProduit) {
@@ -129,7 +132,7 @@ function changeQtt() {
 			});
 		}
 	);
-} 
+}
 
 // Les [] correspondent au caracteres qu'on peut utiliser les {} correspondent au nombre de caractere que l'on peut utiliser.
 //const validationMail = new RegExp('[a-z]{3}[A-Z]{1}[0-9]{3}')
@@ -141,27 +144,75 @@ function changeQtt() {
 // 	error += 'Invalid email';
 // }
 
-
 // Partie regex formulaire
 
-let prenomRegex = new RegExp ('[A-Z]{1}[a-z]');
-let nomRegex = new RegExp ('[A-Z]{1}[a-z]');
-let adresseRegex = new RegExp ('[A-Z]{1}[a-z]');
-let villeRegex = new RegExp ('[A-Z]{1}[a-z]');
-let emailRegex = new RegExp ('[a-z0-9]+@[a-z]+\.[a-z]{2,3}$');
-let prenom = document.getElementById('firstName');
-let nom = document.getElementById('lastName');
-let adresse = document.getElementById('address');
-let email = document.getElementById('email');
-let erreurMsgPrenom = document.getElementById('firstNameErrorMsg');
-let erreurMsgName = document.getElementById('lastNameErrorMsg');
-let erreurMsgAdresse = document.getElementById('addressErrorMsg');
-let erreurMsgVille = document.getElementById('cityErrorMsg');
-let erreurMsgEmail = document.getElementById('emailErrorMsg');
+let formulaire = document.querySelector('.cart__order__form');
+let prenomRegex = new RegExp('^[A-Z]{1}[a-z éèêûëïôö -]{2,20}$');
+let nomRegex = new RegExp('^[A-Z]{3,25}$');
+let adresseRegex = new RegExp('^[a-zA-Z0-9 \s]{6,60}$');
+let villeRegex = new RegExp('^[A-Z]{1}[a-z]{2,25}$');
+let emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,5}$');
+	
+function verificationInput() {
+	let testPrenom = prenomRegex.test(formulaire.firstName.value);
+	let prenomErrorMsg = document.getElementById('firstNameErrorMsg');
+	let testNom = nomRegex.test(formulaire.lastName.value);
+	let nomErrorMsg = document.getElementById('lastNameErrorMsg');
+	let testAdresse = adresseRegex.test(formulaire.address.value);
+	let adresseErrorMsg = document.getElementById('addressErrorMsg');
+	let testVille = villeRegex.test(formulaire.city.value);
+	let villeErrorMsg = document.getElementById('cityErrorMsg');
+	let testEmail = emailRegex.test(formulaire.email.value);
+	let emailErrorMsg = document.getElementById('emailErrorMsg'); 
 
+	if (testPrenom) {
+		prenomErrorMsg.innerText = '';
+		formulaire.firstName.style.border = 'solid 3px green';
+	} else {
+		prenomErrorMsg.innerText = 'Prénom invalide.';
+		formulaire.firstName.style.border = 'solid 3px red';
+	};
 
-if(emailRegex.test('Samy.chabbi@yahoo.abc')){
+	if (testNom) {
+		nomErrorMsg.innerText = '';
+		formulaire.lastName.style.border = 'solid 3px green';
+	} else {
+		nomErrorMsg.innerText = 'Nom invalide, veuillez respecter la casse.';
+		formulaire.lastName.style.border = 'solid 3px red';
+	};
+
+	if(testAdresse){
+		adresseErrorMsg.innerText = '';
+		formulaire.address.style.border = 'solid 3px green';
+	}else {
+		adresseErrorMsg.innerText = 'Adresse invalide.';
+		formulaire.address.style.border = 'solid 3px red';
+	};
+
+	if(testVille){
+		villeErrorMsg.innerText = '';
+		formulaire.city.style.border = 'solid 3px green';
+	}else {
+		villeErrorMsg.innerText = 'invalide.';
+		formulaire.city.style.border = 'solid 3px red';
+	};
+
+	if(testEmail){
+		emailErrorMsg.innerText = '';
+		formulaire.email.style.border = 'solid 3px green';
+	}else {
+		emailErrorMsg.innerText = 'email invalide.';
+		formulaire.email.style.border = 'solid 3px red';
+	}
+	
+}
+
+formulaire.addEventListener('change', () => {
+	verificationInput();
+});
+
+if(adresseRegex.test('12 rue du parc')){
 	console.log('valid');
 }else{
 	console.log('invalide');
-} 
+}
