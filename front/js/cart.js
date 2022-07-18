@@ -23,7 +23,7 @@ function affichagePanier() {
 					let id = variable._id;
 
 					// Boucle pour récupérer les éléments du panier storage et on les ajoutent.
-					for (const element of panierStorage) {
+					for (const element of panierStorage){
 						if (element.id === id) {
 							console.log(element);
 							items.innerHTML += `<article class="cart__item" data-id="${element.id}" data-color="${element.couleur}">
@@ -137,132 +137,106 @@ function changeQtt() {
 // Les [] correspondent au caracteres qu'on peut utiliser les {} correspondent au nombre de caractere que l'on peut utiliser.
 //const validationMail = new RegExp('[a-z]{3}[A-Z]{1}[0-9]{3}')
 
-//if (validationMail.test(term)) {
-// console.log("Valid");
-// } else {
-// 	console.log("Invalid");
-// 	error += 'Invalid email';
-// }
-
 // Partie regex formulaire
 
 let formulaire = document.querySelector('.cart__order__form');
-let validationFormulaire = document.querySelector('#order');
-let btnCommander = document.getElementById('order'); 	
+let btnCommander = document.getElementById('order');
 let prenomRegex = new RegExp('^[A-Z]{1}[a-z éèêûëïôö -]{2,20}$');
 let nomRegex = new RegExp('^[A-Z]{3,25}$');
-let adresseRegex = new RegExp('^[a-zA-Z0-9 \s]{1,5}[a-zA-Z \s]{3,30}$');
-let villeRegex = new RegExp('^[A-Z]{1}[a-z]{2,25}$');
-let emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,5}$');
-let testPrenom = prenomRegex.test(formulaire.firstName.value);
-let testNom = nomRegex.test(formulaire.lastName.value);
-let testAdresse = adresseRegex.test(formulaire.address.value);
-let testVille = villeRegex.test(formulaire.city.value);
-let testEmail = emailRegex.test(formulaire.email.value);
+let adresseRegex = new RegExp('^[a-zA-Z0-9 s]{1,5}[a-zA-Z s]{3,30}$');
+let villeRegex = new RegExp('^[A-Z]{1}[a-z]{1,25}$');
+let emailRegex = new RegExp(
+	'^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,5}$'
+);
 
-// if(prenomRegex === true){
-// 	formulaire.addEventListener('click', () =>{
-// 		console.log('hello');
-// 	})
+// if (adresseRegex.test('12 rue du parc')) {
+// 	console.log('valid');
+// } else {
+// 	console.log('invalide');
 // }
 
-
 function verificationPrenom() {
-	formulaire.firstName.addEventListener('change', ()=>{
-		
+	formulaire.firstName.addEventListener('change', () => {
+		let testPrenom = prenomRegex.test(formulaire.firstName.value);
 		let prenomErrorMsg = document.getElementById('firstNameErrorMsg');
 		if (testPrenom) {
 			prenomErrorMsg.innerText = '';
 			formulaire.firstName.style.border = 'solid 3px green';
-			btnCommander.disabled = false; 
-			
+			btnCommander.disabled = false;
 		} else {
 			prenomErrorMsg.innerText = 'Prénom invalide.';
 			formulaire.firstName.style.border = 'solid 3px red';
-			btnCommander.disabled = true; 
-			
+			btnCommander.disabled = true;
 		}
 	});
-
 }
 
 function verificationNom() {
-	formulaire.lastName.addEventListener('change',() => {
-		
+	formulaire.lastName.addEventListener('change', () => {
+		let testNom = nomRegex.test(formulaire.lastName.value);
 		let nomErrorMsg = document.getElementById('lastNameErrorMsg');
-	
+
 		if (testNom) {
 			nomErrorMsg.innerText = '';
 			formulaire.lastName.style.border = 'solid 3px green';
-			btnCommander.disabled = false; 
-			
+			btnCommander.disabled = false;
 		} else {
 			nomErrorMsg.innerText = 'Nom invalide, veuillez respecter la casse.';
 			formulaire.lastName.style.border = 'solid 3px red';
-			btnCommander.disabled = true; 
+			btnCommander.disabled = true;
 		}
 	});
-
 }
 
 function verificationAdresse() {
-
-	formulaire.address.addEventListener('change', ()=>{
-		
+	formulaire.address.addEventListener('change', () => {
 		let adresseErrorMsg = document.getElementById('addressErrorMsg');
-	
+		let testAdresse = adresseRegex.test(formulaire.address.value);
 		if (testAdresse) {
 			adresseErrorMsg.innerText = '';
 			formulaire.address.style.border = 'solid 3px green';
-			btnCommander.disabled = false; 
-			
+			btnCommander.disabled = false;
 		} else {
 			adresseErrorMsg.innerText = 'Adresse invalide.';
 			formulaire.address.style.border = 'solid 3px red';
-			btnCommander.disabled = true;  
+			btnCommander.disabled = true;
 		}
 	});
-
 }
 
 function verificationVille() {
 	formulaire.city.addEventListener('change', () => {
-		
+		let testVille = villeRegex.test(formulaire.city.value);
 		let villeErrorMsg = document.getElementById('cityErrorMsg');
-	
+
 		if (testVille) {
 			villeErrorMsg.innerText = '';
 			formulaire.city.style.border = 'solid 3px green';
-			btnCommander.disabled = false; 
-			
+			btnCommander.disabled = false;
 		} else {
 			villeErrorMsg.innerText = 'invalide.';
 			formulaire.city.style.border = 'solid 3px red';
-			btnCommander.disabled = true;  
+			btnCommander.disabled = true;
 		}
 	});
-
 }
 
 function verificationEmail() {
-	formulaire.email.addEventListener('change', () =>{
-		
+	formulaire.email.addEventListener('change', () => {
+		let testEmail = emailRegex.test(formulaire.email.value);
 		let emailErrorMsg = document.getElementById('emailErrorMsg');
-	
+
 		if (testEmail) {
 			emailErrorMsg.innerText = '';
 			formulaire.email.style.border = 'solid 3px green';
-			btnCommander.disabled = false; 
+			btnCommander.disabled = false;
 		} else {
 			emailErrorMsg.innerText = 'email invalide.';
 			formulaire.email.style.border = 'solid 3px red';
-			btnCommander.disabled = true; 
+			btnCommander.disabled = true;
 		}
 	});
-
 }
-
-
 
 verificationPrenom();
 verificationNom();
@@ -270,30 +244,31 @@ verificationAdresse();
 verificationVille();
 verificationEmail();
 
-// Envoie du formulaire 
-
-btnCommander.addEventListener('submit', () =>{
-let commandeClient = {
-prenom : testPrenom,
-nom : testNom, 
-adresse : testAdresse,
-ville : testVille, 
-email : testEmail, 
-};
-
-})
+// Fonction pour récupérer les id 
 
 
+// Envoie du formulaire
 
-// formulaire.addEventListener('submit', () =>{
-// 	if (testPrenom == true && testNom == true && testAdresse == true && testVille == true && testEmail == true) {
-// 		console.log("OK");
-// 	}
-// });
+btnCommander.addEventListener('click', () => {
+	let contact = {
+		prenom: formulaire.firstName.value,
+		nom: formulaire.lastName.value,
+		adresse: formulaire.address.value,
+		ville: formulaire.city.value,
+		email: formulaire.email.value,
+	};
+
+	let produits = []; 
+	
+	fetch('http://localhost:3000/api/produits/order', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json;charset=utf-8',
+		},
+		body: JSON.stringify(contact, produits),
+	});
+	let resultat = response.json(); 
+	console.log(resultat);
+});
 
 
-if (adresseRegex.test('12 rue du parc')) {
-	console.log('valid');
-} else {
-	console.log('invalide');
-}
