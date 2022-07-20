@@ -53,9 +53,11 @@ function affichagePanier() {
 				totalQttPrix();
 				supprimerProduit();
 				changeQtt();
-			}).catch(
+			})
+			.catch(
 				(erreur) =>
-					(document.querySelector('h1').innerText = "l'erreur suivante est survenue : " + erreur)
+					(document.querySelector('h1').innerText =
+						"l'erreur suivante est survenue : " + erreur)
 			);
 	}
 }
@@ -65,14 +67,14 @@ function totalQttPrix() {
 	// Récupération de l'id
 	let totalQuantity = document.getElementById('totalQuantity');
 	// Initialisation du total à 0
-	let total = 0; 
+	let total = 0;
 
 	panierStorage.forEach((element) => {
 		// Total 0 + la quantité stocké dans le locale storage
 		total += element.quantité;
 	});
 	// quantité retranscrite
-	totalQuantity.innerText = total; 
+	totalQuantity.innerText = total;
 
 	let cartItem = document.querySelectorAll('.cart__item');
 	// Initialisation du prix à 0
@@ -86,10 +88,10 @@ function totalQttPrix() {
 		)[i].innerText;
 		let qtt = document.querySelectorAll('.itemQuantity')[i].value;
 		// notre prix total
-		totalPrix += parseInt(prix) * qtt; 
+		totalPrix += parseInt(prix) * qtt;
 	}
 	//retranscription du prix
-	totalPrice.innerText = totalPrix; 
+	totalPrice.innerText = totalPrix;
 }
 
 //fonction pour la suppression des articles au clique.
@@ -117,18 +119,23 @@ function supprimerProduit() {
 // Fonction pour changer la quantité de manière dynamique.
 
 function changeQtt() {
+	// récupération de l'input qu'on transforme en tableau
 	let input = Array.from(document.querySelectorAll('.itemQuantity')).forEach(
 		(element) => {
 			element.addEventListener('change', (e) => {
-				// panierStorage.quantité
 				const idProduit =
 					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
 						'data-id'
 					);
 
+				const couleurProduit =
+					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
+						'data-color'
+					);
+
 				const nouvelleQte = parseInt(e.target.value);
 				const majProduit = panierStorage.map((element) => {
-					if (element.id === idProduit) {
+					if (element.id === idProduit && element.couleur === couleurProduit) {
 						element.quantité = nouvelleQte;
 					}
 
@@ -147,13 +154,13 @@ function changeQtt() {
 // Les [] correspondent aux caracteres qu'on peut utiliser les {} correspondent aux nombres de caracteres que l'on peut utiliser.
 let formulaire = document.querySelector('.cart__order__form');
 let btnCommander = document.getElementById('order');
-let prenomRegex = new RegExp("^[A-Z]{1}[a-z éèêûëïôö -]{2,20}$");
+let prenomRegex = new RegExp('^[A-Z]{1}[a-z éèêûëïôö -]{2,20}$');
 let nomRegex = new RegExp('^[A-Z]{3,25}$');
-let adresseRegex = new RegExp("^[a-zA-Z0-9 ' ]{1,5}[a-zA-Z \s]{3,30}$");
+let adresseRegex = new RegExp("^[a-zA-Z0-9 ' ]{1,5}[a-zA-Z s]{3,30}$");
 let villeRegex = new RegExp("^[A-Z]{1}[a-z ']{1,25}$");
-let emailRegex = new RegExp("^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}$");
-	
-
+let emailRegex = new RegExp(
+	'^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}$'
+);
 
 // if (adresseRegex.test('12 rue du parc')) {
 // 	console.log('valid');
@@ -284,8 +291,6 @@ btnCommander.addEventListener('click', (event) => {
 		.then((response) => response.json())
 		.then((res) => {
 			window.location.href = 'confirmation.html?orderId=' + res.orderId;
-		}).catch(
-			(erreur) =>
-				(alert(erreur))
-		);
+		})
+		.catch((erreur) => alert(erreur));
 });

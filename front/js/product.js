@@ -18,6 +18,7 @@ const urlParams = new URLSearchParams(myId);
 const _id = urlParams.get('_id');
 
 afficherProduitSelectionné(); 
+addToCart.addEventListener('click', ajoutProduit);
 
 // Récupération de l'api plus boucle pour afficher les éléments de l'api.
 function afficherProduitSelectionné() {
@@ -71,12 +72,13 @@ function ajoutProduit() {
 				// transformation de l'objet js en json.
 				localStorage.setItem('article', JSON.stringify(panierStorage));
 				alert('Article ajouté à votre panier.');
-				return;
+				return el; 
 			}
 		}
 	}
 	// Verification de la condition et push du panier dans le panierStorage et transformation de l'objet js en json.
 	if (panier.couleur !== '' && panier.quantité >= 0 && panier.quantité <= 100) {
+		// on pousse le panier dans le localstorage
 		panierStorage.push(panier);
 		localStorage.setItem('article', JSON.stringify(panierStorage));
 		// Alerte d'ajout des produits au localstorage
@@ -84,4 +86,4 @@ function ajoutProduit() {
 	}
 }
 // appel de la fonnction ajoutProduit au clique ajouter au panier.
-addToCart.addEventListener('click', ajoutProduit);
+
