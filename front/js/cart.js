@@ -5,7 +5,7 @@ affichagePanier();
 
 // Création de variable pour chaques éléments du panierStorage
 function affichagePanier() {
-	if (panierStorage == '') {
+	if (panierStorage === null) {
 		document.querySelector('h1').innerText = 'Votre panier est vide.';
 	} else {
 		// Boucle pour créer des variables pour chaques données dans l'api
@@ -23,7 +23,7 @@ function affichagePanier() {
 					let id = variable._id;
 
 					// Boucle pour récupérer les éléments du panier storage et on les ajoutent.
-					for (const element of panierStorage){
+					for (const element of panierStorage) {
 						if (element.id === id) {
 							console.log(element);
 							items.innerHTML += `<article class="cart__item" data-id="${element.id}" data-color="${element.couleur}">
@@ -53,7 +53,10 @@ function affichagePanier() {
 				totalQttPrix();
 				supprimerProduit();
 				changeQtt();
-			});
+			}).catch(
+				(erreur) =>
+					(document.querySelector('h1').innerText = "l'erreur suivante est survenue : " + erreur)
+			);
 	}
 }
 
@@ -61,13 +64,15 @@ function affichagePanier() {
 function totalQttPrix() {
 	// Récupération de l'id
 	let totalQuantity = document.getElementById('totalQuantity');
-	let total = 0; // Initialisation du total à 0
+	// Initialisation du total à 0
+	let total = 0; 
 
 	panierStorage.forEach((element) => {
 		// Total 0 + la quantité stocké dans le locale storage
 		total += element.quantité;
 	});
-	totalQuantity.innerText = total; // quantité retranscrite
+	// quantité retranscrite
+	totalQuantity.innerText = total; 
 
 	let cartItem = document.querySelectorAll('.cart__item');
 	// Initialisation du prix à 0
@@ -80,9 +85,11 @@ function totalQttPrix() {
 			'.cart__item__content__description :nth-child(3)'
 		)[i].innerText;
 		let qtt = document.querySelectorAll('.itemQuantity')[i].value;
-		totalPrix += parseInt(prix) * qtt; // notre prix total
+		// notre prix total
+		totalPrix += parseInt(prix) * qtt; 
 	}
-	totalPrice.innerText = totalPrix; //retranscription du prix
+	//retranscription du prix
+	totalPrice.innerText = totalPrix; 
 }
 
 //fonction pour la suppression des articles au clique.
@@ -124,9 +131,10 @@ function changeQtt() {
 					if (element.id === idProduit) {
 						element.quantité = nouvelleQte;
 					}
+
 					return element;
 				});
-				console.log(majProduit);
+				// console.log(majProduit);
 				localStorage.setItem('article', JSON.stringify(majProduit));
 				location.reload();
 			});
@@ -134,26 +142,26 @@ function changeQtt() {
 	);
 }
 
-// Les [] correspondent au caracteres qu'on peut utiliser les {} correspondent au nombre de caractere que l'on peut utiliser.
-//const validationMail = new RegExp('[a-z]{3}[A-Z]{1}[0-9]{3}')
-
 // Partie regex formulaire
 
+// Les [] correspondent aux caracteres qu'on peut utiliser les {} correspondent aux nombres de caracteres que l'on peut utiliser.
 let formulaire = document.querySelector('.cart__order__form');
 let btnCommander = document.getElementById('order');
-let prenomRegex = new RegExp('^[A-Z]{1}[a-z éèêûëïôö -]{2,20}$');
+let prenomRegex = new RegExp("^[A-Z]{1}[a-z éèêûëïôö -]{2,20}$");
 let nomRegex = new RegExp('^[A-Z]{3,25}$');
-let adresseRegex = new RegExp('^[a-zA-Z0-9 s]{1,5}[a-zA-Z s]{3,30}$');
-let villeRegex = new RegExp('^[A-Z]{1}[a-z]{1,25}$');
-let emailRegex = new RegExp(
-	'^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,5}$'
-);
+let adresseRegex = new RegExp("^[a-zA-Z0-9 ' ]{1,5}[a-zA-Z \s]{3,30}$");
+let villeRegex = new RegExp("^[A-Z]{1}[a-z ']{1,25}$");
+let emailRegex = new RegExp("^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}$");
+	
+
 
 // if (adresseRegex.test('12 rue du parc')) {
 // 	console.log('valid');
 // } else {
 // 	console.log('invalide');
 // }
+
+//  Fonction de vérification des input du formulaire via les regex.
 
 function verificationPrenom() {
 	formulaire.firstName.addEventListener('change', () => {
@@ -244,31 +252,40 @@ verificationAdresse();
 verificationVille();
 verificationEmail();
 
-// Fonction pour récupérer les id 
-
+// Fonction pour récupérer les id
 
 // Envoie du formulaire
 
-btnCommander.addEventListener('click', () => {
+btnCommander.addEventListener('click', (event) => {
+	event.preventDefault();
 	let contact = {
-		prenom: formulaire.firstName.value,
-		nom: formulaire.lastName.value,
-		adresse: formulaire.address.value,
-		ville: formulaire.city.value,
+		firstName: formulaire.firstName.value,
+		lastName: formulaire.lastName.value,
+		address: formulaire.address.value,
+		city: formulaire.city.value,
 		email: formulaire.email.value,
 	};
-
-	let produits = []; 
-	
-	fetch('http://localhost:3000/api/produits/order', {
+	// Création d'un tableau vide ou on poussera nos id
+	let produits = [];
+	// On pousse les id dans notre panier vide.
+	panierStorage.forEach((element) => {
+		produits.push(element.id);
+	});
+	// console.log(contact, produits);
+	// On utilise la méthode POST de fetch
+	fetch('http://localhost:3000/api/products/order', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
 		},
-		body: JSON.stringify(contact, produits),
-	});
-	let resultat = response.json(); 
-	console.log(resultat);
+		// On convertit nos objets js en objet json
+		body: JSON.stringify({ contact: contact, products: produits }),
+	})
+		.then((response) => response.json())
+		.then((res) => {
+			window.location.href = 'confirmation.html?orderId=' + res.orderId;
+		}).catch(
+			(erreur) =>
+				(alert(erreur))
+		);
 });
-
-
