@@ -18,6 +18,7 @@ function affichageDesproduits() {
       </a>`;
 			});
 		})
+		// Affichage de l'erreur. 
 		.catch(
 			(erreur) =>
 				(items.innerText = "l'erreur suivante est survenue : " + erreur)

@@ -1,4 +1,4 @@
-// Récupération des id et des classes dans le html
+// Récupération des id et des classes.
 const picture = document.querySelector('.item__img');
 const title = document.querySelector('#title');
 let price = document.getElementById('price');
@@ -8,16 +8,18 @@ let color = document.getElementById('colors');
 let addToCart = document.getElementById('addToCart');
 let quantité = document.getElementById('quantity');
 
-// récupereration de l'id de l'url avec ?
+// récupereration de l'id de l'url avec le point d'interrogation
 const myId = window.location.search;
 
 // On extrait l'id
 const urlParams = new URLSearchParams(myId);
 
-// on stocke l'id dans notre variable.
+// on stocke l'id dans notre variable sans le point d'interrogation.
 const _id = urlParams.get('_id');
 
+
 afficherProduitSelectionné(); 
+// Appel de la fonction au clique "Ajouter au panier".
 addToCart.addEventListener('click', ajoutProduit);
 
 // Récupération de l'api plus boucle pour afficher les éléments de l'api.
@@ -40,6 +42,7 @@ fetch('http://localhost:3000/api/products' + myId)
 				});
 			}
 		});
+		// Si erreur on affiche le message de l'erreur.
 	}).catch(
 		(erreur) =>
 			(title.innerText = "l'erreur suivante est survenue : " + erreur)
@@ -61,7 +64,7 @@ function ajoutProduit() {
 	//Vérification si il y a des produit dans le panier si la couleur et l'id et la même on additionne les quantités
 	if (localStorage.getItem('article')) {
 		panierStorage = JSON.parse(localStorage.getItem('article'));
-		// Boucle des elements dans notre localstorage
+		// Boucle des elements dans notre localstorage si la condition est bien remplie. 
 		for (el in panierStorage) {
 			if (
 				panierStorage[el].id === panier.id &&
@@ -85,5 +88,5 @@ function ajoutProduit() {
 		alert('Article ajouté au panier.');
 	}
 }
-// appel de la fonnction ajoutProduit au clique ajouter au panier.
+
 

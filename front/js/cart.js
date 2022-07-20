@@ -13,7 +13,7 @@ function affichagePanier() {
 			.then((response) => response.json())
 			.then((data) => {
 				let panierStorage = JSON.parse(localStorage.getItem('article'));
-				console.log(panierStorage);
+				
 				// Boucle sur l'api pour récupérer les données nécéssaires
 				for (const variable of data) {
 					let img = variable.imageUrl;
@@ -53,7 +53,7 @@ function affichagePanier() {
 				totalQttPrix();
 				supprimerProduit();
 				changeQtt();
-			})
+			}) // Si erreur on affiche le message de l'erreur.
 			.catch(
 				(erreur) =>
 					(document.querySelector('h1').innerText =
@@ -123,17 +123,19 @@ function changeQtt() {
 	let input = Array.from(document.querySelectorAll('.itemQuantity')).forEach(
 		(element) => {
 			element.addEventListener('change', (e) => {
+				// Récupération de l'id
 				const idProduit =
 					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
 						'data-id'
 					);
-
+				// Récupération de la couleur
 				const couleurProduit =
 					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
 						'data-color'
 					);
-
+				// Récupération de la nouvelle quantitée		
 				const nouvelleQte = parseInt(e.target.value);
+				// Création d'un nouveau tableau si la condition est remplie on stock la quantité dans nouvelleQte. 
 				const majProduit = panierStorage.map((element) => {
 					if (element.id === idProduit && element.couleur === couleurProduit) {
 						element.quantité = nouvelleQte;
@@ -146,7 +148,8 @@ function changeQtt() {
 				location.reload();
 			});
 		}
-	);
+	)	
+	
 }
 
 // Partie regex formulaire
@@ -159,18 +162,14 @@ let nomRegex = new RegExp('^[A-Z]{3,25}$');
 let adresseRegex = new RegExp("^[a-zA-Z0-9 ' ]{1,5}[a-zA-Z s]{3,30}$");
 let villeRegex = new RegExp("^[A-Z]{1}[a-z ']{1,25}$");
 let emailRegex = new RegExp(
-	'^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}$'
+	"^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}$"
 );
 
-// if (adresseRegex.test('12 rue du parc')) {
-// 	console.log('valid');
-// } else {
-// 	console.log('invalide');
-// }
+
 
 //  Fonction de vérification des input du formulaire via les regex.
-
 function verificationPrenom() {
+	// Au changement de l'input on effectue les vérifications via les regex.
 	formulaire.firstName.addEventListener('change', () => {
 		let testPrenom = prenomRegex.test(formulaire.firstName.value);
 		let prenomErrorMsg = document.getElementById('firstNameErrorMsg');
@@ -187,6 +186,7 @@ function verificationPrenom() {
 }
 
 function verificationNom() {
+		// Au changement de l'input on effectue les vérifications via les regex.
 	formulaire.lastName.addEventListener('change', () => {
 		let testNom = nomRegex.test(formulaire.lastName.value);
 		let nomErrorMsg = document.getElementById('lastNameErrorMsg');
@@ -204,6 +204,7 @@ function verificationNom() {
 }
 
 function verificationAdresse() {
+	// Au changement de l'input on effectue les vérifications via les regex.
 	formulaire.address.addEventListener('change', () => {
 		let adresseErrorMsg = document.getElementById('addressErrorMsg');
 		let testAdresse = adresseRegex.test(formulaire.address.value);
@@ -220,6 +221,7 @@ function verificationAdresse() {
 }
 
 function verificationVille() {
+	// Au changement de l'input on effectue les vérifications via les regex.
 	formulaire.city.addEventListener('change', () => {
 		let testVille = villeRegex.test(formulaire.city.value);
 		let villeErrorMsg = document.getElementById('cityErrorMsg');
@@ -237,6 +239,7 @@ function verificationVille() {
 }
 
 function verificationEmail() {
+	// Au changement de l'input on effectue les vérifications via les regex.
 	formulaire.email.addEventListener('change', () => {
 		let testEmail = emailRegex.test(formulaire.email.value);
 		let emailErrorMsg = document.getElementById('emailErrorMsg');
@@ -278,7 +281,7 @@ btnCommander.addEventListener('click', (event) => {
 	panierStorage.forEach((element) => {
 		produits.push(element.id);
 	});
-	// console.log(contact, produits);
+	
 	// On utilise la méthode POST de fetch
 	fetch('http://localhost:3000/api/products/order', {
 		method: 'POST',
@@ -287,7 +290,7 @@ btnCommander.addEventListener('click', (event) => {
 		},
 		// On convertit nos objets js en objet json
 		body: JSON.stringify({ contact: contact, products: produits }),
-	})
+	})   // Si la réponse est ok on renvoie l'utilisateur sur la page confirmation
 		.then((response) => response.json())
 		.then((res) => {
 			window.location.href = 'confirmation.html?orderId=' + res.orderId;
