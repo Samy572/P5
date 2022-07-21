@@ -133,7 +133,7 @@ function changeQtt() {
 					e.target.parentNode.parentNode.parentNode.parentNode.getAttribute(
 						'data-color'
 					);
-				// Récupération de la nouvelle quantitée		
+				// Création de la variable nouvelleQte		
 				const nouvelleQte = parseInt(e.target.value);
 				// Création d'un nouveau tableau si la condition est remplie on stock la quantité dans nouvelleQte. 
 				const majProduit = panierStorage.map((element) => {
